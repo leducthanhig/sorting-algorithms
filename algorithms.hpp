@@ -62,28 +62,18 @@ void mergeSort(int* a, int l, int r, uint64& comparisons) {
 }
 
 // ============= Quick Sort =============
-int partition(int* array, int low, int high, uint64& comparisons) {
-    int pivot = array[high];
-    int i = (low - 1);
-
-    for (int j = low; ++comparisons && j < high; j++) {
-        if (++comparisons && array[j] <= pivot) {
-            i++;
-            swap(array[i], array[j]);
+void quickSort(int* arr, int low, int high, uint64& comparisons) {
+    int i = low, j = high, mid = arr[low + (high - low) / 2];
+    while (++comparisons && i <= j) {
+        while (++comparisons && arr[i] < mid) i++;
+        while (++comparisons && mid < arr[j]) j--;
+        if (++comparisons && i <= j) {
+            swap(arr[i], arr[j]);
+            i++; j--;
         }
     }
-
-    swap(array[i + 1], array[high]);
-
-    return (i + 1);
-}
-
-void quickSort(int* array, int low, int high, uint64& comparisons) {
-    if (++comparisons && low < high) {
-        int pi = partition(array, low, high, comparisons);
-        quickSort(array, low, pi - 1, comparisons);
-        quickSort(array, pi + 1, high, comparisons);
-    }
+    if (++comparisons && i < high) quickSort(arr, i, high, comparisons);
+    if (++comparisons && low < j) quickSort(arr, low, j, comparisons);
 }
 
 // ============= Helper functions for Counting Sort and Radix Sort =============
